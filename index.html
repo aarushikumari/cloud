@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sample Site — AWS Midterm Demo</title>
+  <style>
+    :root{
+      --bg:#f6f8fb; --card:#ffffff; --muted:#6b7280; --brand:#2563eb;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;background:var(--bg);color:#111}
+    header{background:linear-gradient(90deg,#0ea5e9,#2563eb);color:white;padding:28px 20px}
+    .container{max-width:980px;margin:24px auto;padding:0 18px}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{
+      width:44px;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+      background:rgba(255,255,255,0.15);font-weight:700;font-size:18px
+    }
+    h1{margin:0;font-size:20px}
+    p.lead{margin:6px 0 0;color:rgba(255,255,255,0.9)}
+    nav{margin-top:16px;display:flex;gap:12px}
+    nav a{color:white;text-decoration:none;font-weight:600;opacity:0.95}
+    main{margin-top:18px}
+    .hero{display:grid;grid-template-columns:1fr;gap:18px;align-items:center}
+    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(15,23,42,0.06)}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+    .feature{padding:14px;border-radius:10px;background:linear-gradient(180deg,#fff,#fbfdff);border:1px solid #eef2ff}
+    button.primary{
+      background:var(--brand);border:0;color:white;padding:10px 14px;border-radius:8px;font-weight:600;
+    }
+    footer{padding:22px 0;color:var(--muted);text-align:center;font-size:14px}
+    pre{background:#0f172a;color:#e6eef8;padding:12px;border-radius:8px;overflow:auto}
+    @media(min-width:720px){ .hero{grid-template-columns:1fr 360px} }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="brand">
+        <div class="logo">AI</div>
+        <div>
+          <h1>AWS Midterm Demo</h1>
+          <p class="lead">A simple static site you can host on S3 or EC2 for practice.</p>
+        </div>
+      </div>
+      <nav aria-label="Main">
+        <a href="#features">Features</a>
+        <a href="#howto">How to Host</a>
+        <a href="#demo">Demo</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="card">
+        <h2>Quick description</h2>
+        <p>Minimal single-file static website demonstrating layout, interactive JS, and a tiny client-side "database" using localStorage. Great for exams — no dependencies, fast to upload.</p>
+
+        <div style="margin-top:14px" id="statusCard">
+          <strong>Site status:</strong> <span id="statusText">Ready</span>
+          <button class="primary" id="clearBtn" style="float:right">Clear Demo Data</button>
+        </div>
+
+        <hr style="margin:16px 0">
+
+        <div>
+          <h3>Student list (demo)</h3>
+          <form id="studentForm" style="display:flex;gap:8px;flex-wrap:wrap">
+            <input id="name" placeholder="Name" required style="flex:1;padding:8px;border-radius:6px;border:1px solid #e6eef8" />
+            <input id="roll" placeholder="Roll No." required style="width:120px;padding:8px;border-radius:6px;border:1px solid #e6eef8" />
+            <button class="primary" type="submit">Add</button>
+          </form>
+
+          <div style="margin-top:12px" class="card">
+            <table style="width:100%;border-collapse:collapse">
+              <thead>
+                <tr style="text-align:left;color:var(--muted)">
+                  <th style="padding:8px 6px">Name</th>
+                  <th style="padding:8px 6px">Roll</th>
+                  <th style="padding:8px 6px">Action</th>
+                </tr>
+              </thead>
+              <tbody id="studentTbody"></tbody>
+            </table>
+            <p id="emptyHint" style="color:var(--muted);margin:8px 0 0">No students yet — add one using the form above.</p>
+          </div>
+        </div>
+      </div>
+
+      <aside>
+        <div class="card">
+          <h3 id="howto">How to host (quick)</h3>
+          <ol>
+            <li>Save this file as <code>index.html</code>.</li>
+            <li><strong>S3:</strong> Upload to bucket → Properties → Static website hosting → set Index document to <code>index.html</code> and (optional) Error document to <code>error.html</code>. Disable block public access and add a bucket policy for public read.</li>
+            <li><strong>EC2:</strong> copy to <code>/var/www/html/index.html</code>, ensure security group allows HTTP (80).</li>
+          </ol>
+          <hr>
+          <h4 id="demo">Local demo notes</h4>
+          <p style="color:var(--muted)">This site stores a small student list in your browser (localStorage). Use the <em>Clear Demo Data</em> button to reset.</p>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <div class="card">
+          <h4>Small checklist</h4>
+          <ul style="color:var(--muted);padding-left:18px">
+            <li>Check security group / port 80</li>
+            <li>Confirm bucket policy if using S3</li>
+            <li>Test in browser using the endpoint or EC2 public IP</li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+
+    <section style="margin-top:18px">
+      <h2 id="features">Features included</h2>
+      <div class="grid" style="margin-top:8px">
+        <div class="feature">
+          <strong>Responsive layout</strong>
+          <p style="margin:8px 0;color:var(--muted)">Works on mobile and desktop.</p>
+        </div>
+        <div class="feature">
+          <strong>Client-side demo</strong>
+          <p style="margin:8px 0;color:var(--muted)">Add/remove items stored in localStorage for quick testing.</p>
+        </div>
+        <div class="feature">
+          <strong>Zero dependencies</strong>
+          <p style="margin:8px 0;color:var(--muted)">No external CSS/JS — great for exam environments.</p>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin-top:18px" class="card">
+      <h2>Troubleshooting tips</h2>
+      <ul style="color:var(--muted)">
+        <li>If the page is blank on S3: ensure <code>Block Public Access</code> is disabled and the bucket policy allows <code>s3:GetObject</code> on <code>arn:aws:s3:::your-bucket/*</code>.</li>
+        <li>If EC2 shows a 403: check file permissions (<code>sudo chmod 644 /var/www/html/index.html</code>) and that Apache/Nginx is running.</li>
+        <li>If JS doesn't persist data: browser may be in private mode blocking localStorage.</li>
+      </ul>
+    </section>
+
+    <footer>
+      &copy; Sample Site • Save as <code>index.html</code> and upload to S3/EC2
+    </footer>
+  </main>
+
+  <script>
+    // Tiny client-side app for demo / exam practice
+    const form = document.getElementById('studentForm');
+    const tbody = document.getElementById('studentTbody');
+    const emptyHint = document.getElementById('emptyHint');
+    const statusText = document.getElementById('statusText');
+    const clearBtn = document.getElementById('clearBtn');
+
+    function getStudents(){ return JSON.parse(localStorage.getItem('students')||'[]'); }
+    function saveStudents(s){ localStorage.setItem('students', JSON.stringify(s)); render(); }
+
+    function render(){
+      const students = getStudents();
+      tbody.innerHTML = '';
+      if(students.length===0){ emptyHint.style.display='block'; } else { emptyHint.style.display='none'; }
+      students.forEach((s,i)=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td style="padding:8px 6px">${escapeHtml(s.name)}</td>
+                        <td style="padding:8px 6px">${escapeHtml(s.roll)}</td>
+                        <td style="padding:8px 6px"><button data-i="${i}" class="del">Delete</button></td>`;
+        tbody.appendChild(tr);
+      });
+      Array.from(document.getElementsByClassName('del')).forEach(btn=> btn.onclick = e=>{
+        const idx = +e.target.dataset.i;
+        const arr = getStudents(); arr.splice(idx,1); saveStudents(arr);
+        statusText.textContent = 'Entry deleted';
+      });
+    }
+
+    form.onsubmit = (e)=>{
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const roll = document.getElementById('roll').value.trim();
+      if(!name||!roll) return;
+      const arr = getStudents();
+      arr.push({name,roll});
+      saveStudents(arr);
+      form.reset();
+      statusText.textContent = 'Saved locally';
+    };
+
+    clearBtn.onclick = ()=>{
+      localStorage.removeItem('students');
+      render();
+      statusText.textContent = 'Demo data cleared';
+    };
+
+    function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+    // init
+    render();
+  </script>
+</body>
+</html>
